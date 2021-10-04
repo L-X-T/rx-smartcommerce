@@ -6,8 +6,7 @@ import { createCustomElement } from '@angular/elements';
 @NgModule({
   imports: [CommonModule],
   exports: [DemoComponent],
-  declarations: [DemoComponent],
-  entryComponents: [DemoComponent]
+  declarations: [DemoComponent]
 })
 export class DemoModule {
   constructor(injector: Injector) {

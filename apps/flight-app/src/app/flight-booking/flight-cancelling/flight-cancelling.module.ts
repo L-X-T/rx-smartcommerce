@@ -5,7 +5,6 @@ import { FlightCancellingComponent } from './flight-cancelling.component';
 @NgModule({
   imports: [CommonModule],
   providers: [],
-  declarations: [FlightCancellingComponent],
-  entryComponents: []
+  declarations: [FlightCancellingComponent]
 })
 export class FlightCancellingModule {}
