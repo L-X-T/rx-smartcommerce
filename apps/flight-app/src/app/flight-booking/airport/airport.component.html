@@ -8,6 +8,11 @@
         ...isLoading
       </div>
     </div>
+    <div class="row" *ngIf="isError">
+      <div class="col-lg-3">
+        ...isError
+      </div>
+    </div>
     <div class="row">
       <div class="col-lg-3" *ngFor="let airport of airports">
         {{ airport }}
@@ -26,6 +31,11 @@
         ...isLoadingTakeUntil
       </div>
     </div>
+    <div class="row" *ngIf="isErrorTakeUntil">
+      <div class="col-lg-3">
+        ...isErrorTakeUntil
+      </div>
+    </div>
     <div class="row">
       <div class="col-lg-3" *ngFor="let airport of takeUntilAirports">
         {{ airport }}
@@ -38,8 +48,8 @@
   <div class="header">
     <h1 class="title">Async Airports</h1>
   </div>
-  <div class="content" *ngIf="(airports$ | async) as asyncAirports else isLoadingAsyncAirports">
-    <div class="row">
+  <div class="content" *ngIf="(asyncAirports$ | async) as asyncAirports else isLoadingAsyncAirports">
+    <div *ngIf="asyncAirports.length > 0 else noAirportsFound" class="row">
       <div class="col-lg-3" *ngFor="let airport of asyncAirports">
         {{ airport }}
       </div>
@@ -58,3 +68,13 @@
     </div>
   </div>
 </ng-template>
+
+<ng-template #noAirportsFound>
+  <div class="row">
+    <div class="col-lg-3">
+    No airports found
+    </div>
+  </div>
+</ng-template>
+
+

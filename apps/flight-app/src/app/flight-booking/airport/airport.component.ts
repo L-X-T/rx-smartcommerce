@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AirportService } from '@flight-workspace/flight-lib';
-import { Observable, Observer, Subject, Subscription } from 'rxjs';
-import { delay, share, takeUntil } from 'rxjs/operators';
+import { Observable, Observer, of, Subject, Subscription } from 'rxjs';
+import { catchError, delay, share, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'flight-workspace-airport',
@@ -20,21 +20,31 @@ export class AirportComponent implements OnInit, OnDestroy {
   takeUntilAirports: string[] = [];
   onDestroySubject = new Subject<void>();
 
-  // isLoading flag
+  // isLoading & isError flags
   isLoading = true;
+  isError = false;
   isLoadingTakeUntil = true;
+  isErrorTakeUntil = false;
+
+  asyncAirports$: Observable<string[]>; // return empty array on error
 
   constructor(private airportService: AirportService) {}
 
   ngOnInit(): void {
     this.airports$ = this.airportService.findAll().pipe(delay(3000), share());
 
+    this.asyncAirports$ = this.airports$.pipe(catchError((err) => of([])));
+
     this.airportsObserver = {
       next: (airports) => {
         this.isLoading = false;
         this.airports = airports;
       },
-      error: (err) => console.error(err),
+      error: (err) => {
+        this.isLoading = false;
+        this.isError = true;
+        console.error(err);
+      },
       complete: () => console.log('Observable completed!')
     };
 
@@ -47,7 +57,11 @@ export class AirportComponent implements OnInit, OnDestroy {
         this.takeUntilAirports = airports;
         this.isLoadingTakeUntil = false;
       },
-      error: (err) => console.error(err),
+      error: (err) => {
+        this.isLoadingTakeUntil = false;
+        this.isErrorTakeUntil = true;
+        console.error(err);
+      },
       complete: () => console.log('Take until Observable completed!')
     });
   }
