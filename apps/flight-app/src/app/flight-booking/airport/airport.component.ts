@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AirportService } from '@flight-workspace/flight-lib';
-import { Observable, Observer, Subscription } from 'rxjs';
+import { Observable, Observer, Subject, Subscription } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'flight-workspace-airport',
@@ -15,6 +16,10 @@ export class AirportComponent implements OnInit, OnDestroy {
   airports: string[] = [];
   airportsSubscription: Subscription;
 
+  // Unsubscribe with takeUntil Subject
+  takeUntilAirports: string[] = [];
+  onDestroySubject = new Subject<void>();
+
   constructor(private airportService: AirportService) {}
 
   ngOnInit(): void {
@@ -28,10 +33,21 @@ export class AirportComponent implements OnInit, OnDestroy {
 
     // Unsubscribe with Subscription
     this.airportsSubscription = this.airports$.subscribe(this.airportsObserver);
+
+    // Unsubscribe with takeUntil Subject
+    this.airports$.pipe(takeUntil(this.onDestroySubject)).subscribe({
+      next: (airports) => (this.takeUntilAirports = airports),
+      error: (err) => console.error(err),
+      complete: () => console.log('Take until Observable completed!')
+    });
   }
 
   ngOnDestroy(): void {
     // Unsubscribe with Subscription
     this.airportsSubscription?.unsubscribe();
+
+    // Unsubscribe with takeUntil Subject
+    this.onDestroySubject.next();
+    this.onDestroySubject.complete();
   }
 }
