@@ -24,10 +24,10 @@ You can follow these steps:
     An example of the JSON-based answer can be found here: http://www.angular.at/help. While the XML response uses Pascal-Case (eg ` From`), the JSON response uses the usual Camel case (eg ` from`). Thus, the practices of the two standards are taken into account.
 
 2. In the `flight-lib` project, create a `services/airport.service.ts` file with a `AirportService` class. If you want you can use `ng generate service airport` or the shorthand `ng g s airport` in your project's root:
-```
-ng generate service services/airport --project flight-lib
-```
-Similar to `FlightService` this class should offer the possibility to search for airports. For this, create a method findAll that returns a ``Observable<string[]>`` with the airport names:
+    ```
+    ng generate service services/airport --project flight-lib
+    ```
+    Similar to `FlightService` this class should offer the possibility to search for airports. For this, create a method findAll that returns a ``Observable<string[]>`` with the airport names:
 
     ``findAll(): Observable<string[]>``
 
