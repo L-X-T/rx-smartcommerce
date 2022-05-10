@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { Flight } from '@flight-workspace/flight-lib';
-import { combineLatest, interval, merge, Observable, of, Subject } from 'rxjs';
+import { Flight, FlightService } from '@flight-workspace/flight-lib';
+import { combineLatest, from, interval, merge, Observable, of, Subject } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, debounceTime, distinctUntilChanged, filter, map, pairwise, retry, startWith, switchMap, tap } from 'rxjs/operators';
 
@@ -24,7 +24,7 @@ export class FlightLookaheadComponent implements OnInit {
   private refreshClickSubject = new Subject<void>();
   readonly refreshClick$ = this.refreshClickSubject.asObservable();
 
-  constructor(private http: HttpClient) {}
+  constructor(private flightService: FlightService, private http: HttpClient) {}
 
   ngOnInit(): void {
     /*this.control = new FormControl();
@@ -74,16 +74,7 @@ export class FlightLookaheadComponent implements OnInit {
       filter(([f, t, online]) => (f || t) && online),
       map(([from, to, _]) => [from, to]),
       tap(([from, to]) => (this.loading = true)),
-      switchMap(([from, to]) =>
-        this.load(from, to).pipe(
-          retry(3), // you retry 3 times
-          catchError((err) => {
-            console.log('Error caught:');
-            console.log(err);
-            return of([]);
-          }) // if all fail catch error
-        )
-      ),
+      switchMap(([from, to]) => this.loadFlights(from, to)),
       tap((a) => (this.loading = false))
     );
 
@@ -93,12 +84,15 @@ export class FlightLookaheadComponent implements OnInit {
     );
   }
 
-  load(from: string, to: string = ''): Observable<Flight[]> {
-    const url = 'http://www.angular.at/api/flight';
-    const params = new HttpParams().set('from', from).set('to', to);
-    const headers = new HttpHeaders().set('Accept', 'application/json');
-
-    return this.http.get<Flight[]>(url, { params, headers });
+  loadFlights(from: string, to: string): Observable<Flight[]> {
+    return this.flightService.find(from, to, false).pipe(
+      retry(3), // you retry 3 times
+      catchError((err) => {
+        console.log('Error caught:');
+        console.log(err);
+        return of([]);
+      }) // if all fail catch error
+    );
   }
 
   refresh(): void {
