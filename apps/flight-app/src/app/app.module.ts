@@ -25,6 +25,9 @@ import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { RouterState, StoreRouterConnectingModule } from '@ngrx/router-store';
 import { PassengersModule } from './passengers/passengers.module';
+import { entityConfig } from './+state/data';
+import { EntityDataModule } from '@ngrx/data';
+import { PassengerDataModule } from './passenger-data/passenger-data.module';
 
 @NgModule({
   imports: [
@@ -45,7 +48,10 @@ import { PassengersModule } from './passengers/passengers.module';
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     StoreRouterConnectingModule.forRoot({ stateKey: 'router', routerState: RouterState.Minimal }),
-    EffectsModule.forRoot([])
+    EffectsModule.forRoot([]),
+
+    EntityDataModule.forRoot(entityConfig),
+    PassengerDataModule
   ],
   declarations: [AppComponent, SidebarComponent, NavbarComponent, HomeComponent, BasketComponent, FlightLookaheadComponent],
   providers: [],

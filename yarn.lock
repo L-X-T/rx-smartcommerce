@@ -1745,6 +1745,13 @@
   dependencies:
     "tslib" "^2.0.0"
 
+"@ngrx/data@12.4.0":
+  "integrity" "sha512-z0qxuSF1/YKA0mF5lRH6uZrDROoV1fJvBUCn+q54FmOqZVAgruBopWa+Y9k1v5P91D5RXiDxU+yYT4FBt9SFxg=="
+  "resolved" "https://registry.npmjs.org/@ngrx/data/-/data-12.4.0.tgz"
+  "version" "12.4.0"
+  dependencies:
+    "tslib" "^2.0.0"
+
 "@ngrx/effects@12.4.0":
   "integrity" "sha512-9N6c+Oj3Rghoi4JnVxqgZ581BYNCLxHK20CVX3WiiEkMXL1cyYNuXVB9+hQHJ6OSME0Jo5YoXzjsIrzFsnMZCw=="
   "resolved" "https://registry.npmjs.org/@ngrx/effects/-/effects-12.4.0.tgz"
