@@ -98,16 +98,16 @@
         passengers$: Observable<DataPassenger[]>;
         loading$: Observable<boolean>;
 
-        ngOnInit() {
+        ngOnInit(): void {
             this.passengers$ = this.passengerService.entities$;
             this.loading$ = this.passengerService.loading$;
         }
 
-        load() {
+        load(): void {
             this.passengerService.getAll();
         }
 
-        add() {
+        add(): void {
             this.passengerService.add({ id: 0, name: 'Muster', firstName: 'Max' });
         }
 
@@ -138,7 +138,7 @@
     </p>
     </details>
 
-5. Open the file ``passenger-data.module``. Make sure the ``PassengerComponent`` is declared and add a route for it by importing ``RouterModule.forChild``.
+5. Open the file ``passenger-data.module``. Make sure the ``PassengerComponent`` is declared and add a route for it by importing ``RouterModule.forChild``. Please also make sure that the `DefaultDataServiceConfig` is provided with the correct API url (see show code toggle). 
 
     <details>
     <summary>Show code</summary>
@@ -159,6 +159,14 @@
         declarations: [
             PassengerComponent
         ],
+        providers: [
+            {
+                provide: DefaultDataServiceConfig,
+                useValue: {
+                    root: 'http://www.angular.at/api'
+                }
+            }
+        ]
     })
     export class PassengerDataModule {}
     ```

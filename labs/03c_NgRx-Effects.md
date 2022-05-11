@@ -37,7 +37,7 @@ In this exercise you will create an effect for loading flights.
     @Injectable()
     export class FlightBookingEffects {
 
-        loadFlights$ = createEffect((): Observable<FlightBookingActions> => 
+        loadFlights$ = createEffect((): Observable<any> => 
             this.actions$.pipe(
                 ofType(loadFlights), 
                 switchMap(a => this.flightService.find(a.from, a.to, a.urgent)),
