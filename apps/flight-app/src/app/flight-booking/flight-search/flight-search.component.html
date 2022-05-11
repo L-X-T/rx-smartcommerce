@@ -45,6 +45,10 @@
         <div *ngIf="isLoadingFlight$ | async">
           Loading flights ...
         </div>
+
+        <div *ngIf="loadingError$ | async as loadingError">
+          {{ loadingError }}
+        </div>
       </div>
     </form>
 

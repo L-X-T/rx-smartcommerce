@@ -13,9 +13,9 @@ export class FlightBookingEffects {
       ofType(FlightBookingActions.loadFlights),
       switchMap((a) =>
         this.flightService.find(a.from, a.to, a.urgent).pipe(
-          // delay(3000),
+          delay(3000),
           map((flights) => FlightBookingActions.loadFlightsSuccessfully({ flights })),
-          catchError((err) => of(FlightBookingActions.loadFlightsError()))
+          catchError((err) => of(FlightBookingActions.loadFlightsError({ err })))
         )
       )
     );
